@@ -1,4 +1,4 @@
-#include "../src/bitset.h"
+#include "../src/bitset/bitset.h"
 
 int main() {
   bitSet set = bitset_create(63);

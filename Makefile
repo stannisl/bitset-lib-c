@@ -12,20 +12,19 @@ OBJ_DIR = $(BUILD_DIR)/objects
 EXEC_DIR = $(BUILD_DIR)/executables
 TESTS_DIR = tests
 SRC_DIR = src
+SRC_DIRS = $(SRC_DIR)/bitset $(SRC_DIR)/output
 EXAMPLE_DIR = examples
 
 # Files
-OBJECTS = $(patsubst %.c, $(BUILD_DIR)/%.o, $(SOURCES))
-SOURCES = $(wildcard $(SRC_DIR)/*.c)
-TEST_SOURCE = $(wildcard  $(TESTS_DIR)/*.c)
+SOURCES = $(foreach dir, $(SRC_DIRS), $(wildcard $(dir)/*.c))
+OBJECTS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SOURCES))
+TEST_SOURCE = $(wildcard $(TESTS_DIR)/*.c)
 TEST_EXEC = $(EXEC_DIR)/test
 
 # Target build
-
 TARGET = $(BUILD_DIR)/bitset.a
 
-# main targets
-
+# Main targets
 all: clean $(TARGET)
 
 rebuild: clean all
@@ -40,8 +39,7 @@ test: build_test_asan
 	./$(TEST_EXEC)
 	@rm -f $(TEST_EXEC)
 
-# precompile targets
-
+# Precompile targets
 build_test_noasan: $(TARGET) $(TEST_SOURCE)
 	@mkdir -p $(EXEC_DIR)
 	$(CC) $(CFLAGS) $(TEST_SOURCE) $(TARGET) -o $(TEST_EXEC)
@@ -50,25 +48,23 @@ build_test_asan: $(TARGET) $(TEST_SOURCE)
 	@mkdir -p $(EXEC_DIR)
 	$(CC) $(CFLAGS) $(ASAN_FLAGS) $(TEST_SOURCE) $(TARGET) -o $(TEST_EXEC)
 
-$(BUILD_DIR)/%.o: %.c
-	mkdir -p $(dir $@)
+# Rule to compile .c files into .o files
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# valgrind targets
-
+# Valgrind targets
 valgrind: build_test_noasan
 	valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all ./$(TEST_EXEC)
 	@rm -f $(TEST_EXEC)
 
-# making folders
-
+# Making folders
 $(BUILD_DIR):
-	@mkdir build
+	@mkdir -p $(BUILD_DIR)
 
-# clang-formatter targets
-
+# Clang-formatter targets
 clang-check:
-	@clang-format --style=google -n src/*.c examples/*.c src/*.h tests/*.c
+	@clang-format --style=google -n $(SRC_DIR)/*.c $(SRC_DIR)/*/*.c $(EXAMPLE_DIR)/*.c $(SRC_DIR)/*.h $(TESTS_DIR)/*.c
 
 clang-format:
-	@clang-format --style=google -i src/*.c examples/*.c src/*.h tests/*.c
+	@clang-format --style=google -i $(SRC_DIR)/*.c $(SRC_DIR)/*/*.c $(EXAMPLE_DIR)/*.c $(SRC_DIR)/*.h $(TESTS_DIR)/*.c

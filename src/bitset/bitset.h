@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "output.h"
+#include "../output/output.h"
 
 // #define GET_BLOCK(element) (element / BIT_PER_BLOCK)
 // #define GET_BIT(element) (element % BIT_PER_BLOCK)
