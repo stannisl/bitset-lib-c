@@ -13,6 +13,7 @@
 // #define GET_BLOCK(element) (element / BIT_PER_BLOCK)
 // #define GET_BIT(element) (element % BIT_PER_BLOCK)
 
+#define INITIAL_BUFFER_SIZE 1024
 #define BIT_PER_BLOCK 64
 
 typedef void (*outputFunc)(const char*);

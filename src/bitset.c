@@ -89,7 +89,7 @@ bool bitset_contains(const bitSet* set, int element) {
  * @return Nothing
  */
 void bitset_print(const bitSet* set, outputFunc func_output) {
-  int max_buffer_size = 1024;
+  int max_buffer_size = INITIAL_BUFFER_SIZE;
   int curr_buffer_size = 0;
   char* buffer = (char*)malloc(max_buffer_size);
 
