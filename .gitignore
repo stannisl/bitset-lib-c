@@ -1,0 +1,8 @@
+# Compiled files
+*.o
+*.a
+build/
+
+# IDE trash
+
+.vscode/
