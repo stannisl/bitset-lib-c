@@ -37,3 +37,23 @@ Make target to get code to clang-14 Google CodeStyle
 ```
 make clang-check
 ```
+
+### Memory leaks test
+
+Make target to get code to clang-14 Google CodeStyle
+
+```
+make valgrind
+```
+
+## Makefile targets
+
+| Target name | Description                                                         |
+| ----------- | ------------------------------------------------------------------- |
+| example     | example bla bla bla example bla bla bla example bla bla bla \n dsda |
+
+## Docs
+
+### bitset.h funcs
+
+### output.h funcs
