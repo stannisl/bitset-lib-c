@@ -22,7 +22,7 @@ bitSet bitset_create(size_t capacity) {
 }
 
 /**
- * @brief Очищает память объекта bitSet
+ * @brief Очищает память объекта стуктуры bitSet
  *
  * @author Mike Ostanin (github.com/stannisl)
  *
@@ -38,7 +38,8 @@ void bitset_destroy(bitSet* set) {
 }
 
 /**
- * @brief Добавляет бит в битовое множество
+ * @brief Добавляет бит в битовое множество, если размер меньше чем бит, ничего
+ * не произойдет и бит не будет добавлен.
  *
  * @author Mike Ostanin (github.com/stannisl)
  *
@@ -48,10 +49,12 @@ void bitset_destroy(bitSet* set) {
  * @return Nothing
  */
 void bitset_add(bitSet* set, int element) {
-  if (element > 0 && set->capacity > (size_t)element) {
-    int block = element / BIT_PER_BLOCK;
-    set->bits[block] |= (1ULL << (element % BIT_PER_BLOCK));
-  }
+  assert("Adding a bit that bigger than capacity" &&
+         set->capacity > (size_t)element);
+  assert("Adding a negative place bit in the set" && element > 0);
+
+  int block = element / BIT_PER_BLOCK;
+  set->bits[block] |= (1ULL << (element % BIT_PER_BLOCK));
 }
 
 /**
@@ -120,4 +123,70 @@ void bitset_print(const bitSet* set, outputFunc func_output) {
 
   func_output(buffer);
   free(buffer);
+}
+
+/**
+ * @brief Сравнивает равны ли битовые множества.
+ *
+ * @author Mike Ostanin (github.com/stannisl)
+ *
+ * @param bitSet* A, указатель на битовове множество
+ * @param bitSet* B, указатель на битовове множество
+ *
+ * @return true (1), A == B или же false (0), A != B
+ */
+bool bitset_is_equal(const bitSet* A, const bitSet* B) {
+  bool isEqual = true;
+  bool aSetIsBigger = false;
+
+  size_t biggerSize = (A->capacity > B->capacity) ? A->capacity : B->capacity;
+  size_t lessSize = (A->capacity < B->capacity) ? A->capacity : B->capacity;
+  if (biggerSize == A->capacity) aSetIsBigger = true;
+
+  for (int i = 0; (i < (int)lessSize) && isEqual; i++)
+    if (bitset_contains(A, i) != bitset_contains(B, i)) isEqual = false;
+
+  for (int i = lessSize; (i < (int)biggerSize) && isEqual; i++)
+    if (aSetIsBigger)
+      isEqual = (bitset_contains(A, i) != 1);
+    else
+      isEqual = (bitset_contains(B, i) != 1);
+
+  return isEqual;
+}
+
+/**
+ * @brief Проверяет, является ли A ⊆ В
+ *
+ * @author Mike Ostanin (github.com/stannisl)
+ *
+ * @param bitSet* A, указатель на битовове множество
+ * @param bitSet* B, указатель на битовове множество
+ *
+ * @return true (1), A ⊆ B или же false (0), !(A ⊆ B)
+ */
+bool bitset_is_subset(const bitSet* A, const bitSet* B) {
+  bool isSubset = true;
+  size_t maxSize = A->size > B->size ? A->size : B->size;
+
+  for (size_t i = 0; i < maxSize && isSubset; ++i) {
+    uint64_t a_block = (i < A->size) ? A->bits[i] : 0;
+    uint64_t b_block = (i < B->size) ? B->bits[i] : 0;
+    if ((a_block & b_block) != a_block) isSubset = false;
+  }
+  return isSubset;
+}
+
+/**
+ * @brief Проверяет, является ли A ⊂ В
+ *
+ * @author Mike Ostanin (github.com/stannisl)
+ *
+ * @param bitSet* A, указатель на битовове множество
+ * @param bitSet* B, указатель на битовове множество
+ *
+ * @return true (1), A ⊂ B или же false (0), !(A ⊂ B)
+ */
+bool bitset_is_strict_subset(const bitSet* A, const bitSet* B) {
+  return bitset_is_subset(A, B) && !bitset_is_equal(A, B);
 }
