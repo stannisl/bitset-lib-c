@@ -58,6 +58,30 @@ void bitset_add(bitSet* set, int element) {
 }
 
 /**
+ * @brief Добавляет n бит в битовое множество
+ *
+ * @author Mike Ostanin (github.com/stannisl)
+ *
+ * @param int n, кол-во элементов
+ * @param bitSet* set, указатель на битовое множество
+ * @param int ..., n битов для добавления.
+ *
+ * @return Nothing
+ */
+void bitset_add_many(bitSet* set, int n, ...) {
+  assert("Amount of args should be positive integer" && (n > 0));
+
+  va_list args;
+  va_start(args, n);
+
+  for (int i = 0; i < n; ++i) {
+    int element = va_arg(args, int);
+    bitset_add(set, element);
+  }
+
+  va_end(args);
+}
+/**
  * @brief Проверяет есть ли n-ый бит в битовом множестве
  *
  * @author Mike Ostanin (github.com/stannisl)
@@ -118,8 +142,7 @@ void bitset_print(const bitSet* set, outputFunc func_output) {
     buffer = (char*)realloc(buffer, max_buffer_size);
   }
 
-  curr_buffer_size += snprintf(buffer + curr_buffer_size,
-                               max_buffer_size - curr_buffer_size, "}");
+  snprintf(buffer + curr_buffer_size, max_buffer_size - curr_buffer_size, "}");
 
   func_output(buffer);
   free(buffer);
@@ -247,7 +270,7 @@ bitSet bitset_intersection(const bitSet* A, const bitSet* B) {
  *
  * @return bitSet, результат разности двух множеств
  */
-bitSet bitset_intersection(const bitSet* A, const bitSet* B) {
+bitSet bitset_sub(const bitSet* A, const bitSet* B) {
   bitSet result =
       bitset_create(A->capacity > B->capacity ? A->capacity : B->capacity);
 
