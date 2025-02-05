@@ -139,18 +139,18 @@ bool bitset_is_equal(const bitSet* A, const bitSet* B) {
   bool isEqual = true;
   bool aSetIsBigger = false;
 
-  size_t biggerSize = (A->capacity > B->capacity) ? A->capacity : B->capacity;
-  size_t lessSize = (A->capacity < B->capacity) ? A->capacity : B->capacity;
-  if (biggerSize == A->capacity) aSetIsBigger = true;
+  size_t biggerSize = (A->size > B->size) ? A->size : B->size;
+  size_t lessSize = (A->size < B->size) ? A->size : B->size;
+  if (biggerSize == A->size) aSetIsBigger = true;
 
   for (int i = 0; (i < (int)lessSize) && isEqual; i++)
-    if (bitset_contains(A, i) != bitset_contains(B, i)) isEqual = false;
+    if (A->bits[i] != B->bits[i]) isEqual = false;
 
   for (int i = lessSize; (i < (int)biggerSize) && isEqual; i++)
     if (aSetIsBigger)
-      isEqual = (bitset_contains(A, i) != 1);
+      isEqual = (A->bits[i] == 0);
     else
-      isEqual = (bitset_contains(B, i) != 1);
+      isEqual = (B->bits[i] == 0);
 
   return isEqual;
 }
