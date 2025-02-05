@@ -3,6 +3,7 @@
 
 #include <assert.h>
 #include <math.h>
+#include <stdarg.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -55,6 +56,19 @@ void bitset_destroy(bitSet* set);
  * @return Nothing
  */
 void bitset_add(bitSet* set, int element);
+
+/**
+ * @brief Добавляет n бит в битовое множество
+ *
+ * @author Mike Ostanin (github.com/stannisl)
+ *
+ * @param bitSet* set, указатель на битовое множество
+ * @param int n, кол-во элементов
+ * @param int ..., n битов для добавления.
+ *
+ * @return Nothing
+ */
+void bitset_add_many(bitSet* set, int n, ...);
 
 /**
  * @brief Проверяет есть ли n-ый бит в битовом множестве
@@ -150,7 +164,7 @@ bitSet bitset_intersection(const bitSet*, const bitSet*);
  *
  * @return bitSet, результат разности двух множеств
  */
-bitSet bitset_intersection(const bitSet*, const bitSet*);
+bitSet bitset_sub(const bitSet*, const bitSet*);
 
 /**
  * @brief Создает битовое множество, значение которого будет А △ В
