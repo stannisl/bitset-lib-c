@@ -15,7 +15,7 @@
 
 typedef void (*outputFunc)(const char*);
 
-typedef struct {
+typedef struct bitSet {
   uint64_t* bits;
   size_t size;
   size_t capacity;
@@ -116,16 +116,55 @@ extern bool bitset_is_subset(const bitSet*, const bitSet*);
  */
 extern bool bitset_is_strict_subset(const bitSet*, const bitSet*);
 
-//  3) объединение А и В (А ∪ В);
-void bitset_union();
+/**
+ * @brief Создает битовое множество, значение которого будет А ∪ В
+ *
+ * @author Mike Ostanin (github.com/stannisl)
+ *
+ * @param bitSet* A, указатель на битовове множество
+ * @param bitSet* B, указатель на битовове множество
+ *
+ * @return bitSet, результат объединения двух множеств
+ */
+bitSet bitset_union(const bitSet*, const bitSet*);
 
-//  4) пересечение А и В (А ∩ В);
-void bitset_intersection();
+/**
+ * @brief Создает битовое множество, значение которого будет А ∩ В
+ *
+ * @author Mike Ostanin (github.com/stannisl)
+ *
+ * @param bitSet* A, указатель на битовове множество
+ * @param bitSet* B, указатель на битовове множество
+ *
+ * @return bitSet, результат пересечения двух множеств
+ */
+bitSet bitset_intersection(const bitSet*, const bitSet*);
 
-//  5) разность множеств А и В (А – В);
+/**
+ * @brief Создает битовое множество, значение которого будет А - В
+ *
+ * @author Mike Ostanin (github.com/stannisl)
+ *
+ * @param bitSet* A, указатель на битовове множество
+ * @param bitSet* B, указатель на битовове множество
+ *
+ * @return bitSet, результат разности двух множеств
+ */
+bitSet bitset_intersection(const bitSet*, const bitSet*);
 
-//  6) симметрическая разность множеств А и В (А △ В);
+/**
+ * @brief Создает битовое множество, значение которого будет А △ В
+ *
+ * @author Mike Ostanin (github.com/stannisl)
+ *
+ * @param bitSet* A, указатель на битовове множество
+ * @param bitSet* B, указатель на битовове множество
+ *
+ * @return bitSet, результат симметрической разности двух множеств
+ */
+bitSet bitset_symmetric_diff(const bitSet*, const bitSet*);
 
 //  7) дополнение А.
+bitSet bitset_complement(const bitSet* set);
 
 #endif

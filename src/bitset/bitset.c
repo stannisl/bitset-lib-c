@@ -139,18 +139,18 @@ bool bitset_is_equal(const bitSet* A, const bitSet* B) {
   bool isEqual = true;
   bool aSetIsBigger = false;
 
-  size_t biggerSize = (A->capacity > B->capacity) ? A->capacity : B->capacity;
-  size_t lessSize = (A->capacity < B->capacity) ? A->capacity : B->capacity;
-  if (biggerSize == A->capacity) aSetIsBigger = true;
+  size_t biggerSize = (A->size > B->size) ? A->size : B->size;
+  size_t lessSize = (A->size < B->size) ? A->size : B->size;
+  if (biggerSize == A->size) aSetIsBigger = true;
 
   for (int i = 0; (i < (int)lessSize) && isEqual; i++)
-    if (bitset_contains(A, i) != bitset_contains(B, i)) isEqual = false;
+    if (A->bits[i] != B->bits[i]) isEqual = false;
 
   for (int i = lessSize; (i < (int)biggerSize) && isEqual; i++)
     if (aSetIsBigger)
-      isEqual = (bitset_contains(A, i) != 1);
+      isEqual = (A->bits[i] == 0);
     else
-      isEqual = (bitset_contains(B, i) != 1);
+      isEqual = (B->bits[i] == 0);
 
   return isEqual;
 }
@@ -189,4 +189,96 @@ bool bitset_is_subset(const bitSet* A, const bitSet* B) {
  */
 bool bitset_is_strict_subset(const bitSet* A, const bitSet* B) {
   return bitset_is_subset(A, B) && !bitset_is_equal(A, B);
+}
+
+/**
+ * @brief Создает битовое множество, значение которого будет А ∪ В
+ *
+ * @author Mike Ostanin (github.com/stannisl)
+ *
+ * @param bitSet* A, указатель на битовове множество
+ * @param bitSet* B, указатель на битовове множество
+ *
+ * @return bitSet, результат объединения двух множеств
+ */
+bitSet bitset_union(const bitSet* A, const bitSet* B) {
+  bitSet result =
+      bitset_create(A->capacity > B->capacity ? A->capacity : B->capacity);
+
+  for (size_t i = 0; i < result.size; i++) {
+    uint64_t a_block = (i < A->size) ? A->bits[i] : 0;
+    uint64_t b_block = (i < B->size) ? B->bits[i] : 0;
+    result.bits[i] = a_block | b_block;
+  }
+
+  return result;
+}
+
+/**
+ * @brief Создает битовое множество, значение которого будет А ∩ В
+ *
+ * @author Mike Ostanin (github.com/stannisl)
+ *
+ * @param bitSet* A, указатель на битовове множество
+ * @param bitSet* B, указатель на битовове множество
+ *
+ * @return bitSet, результат пересечения двух множеств
+ */
+bitSet bitset_intersection(const bitSet* A, const bitSet* B) {
+  bitSet result =
+      bitset_create(A->capacity > B->capacity ? A->capacity : B->capacity);
+
+  for (size_t i = 0; i < result.size; i++) {
+    uint64_t a_block = (i < A->size) ? A->bits[i] : 0;
+    uint64_t b_block = (i < B->size) ? B->bits[i] : 0;
+    result.bits[i] = a_block & b_block;
+  }
+
+  return result;
+}
+
+/**
+ * @brief Создает битовое множество, значение которого будет А - В
+ *
+ * @author Mike Ostanin (github.com/stannisl)
+ *
+ * @param bitSet* A, указатель на битовове множество
+ * @param bitSet* B, указатель на битовове множество
+ *
+ * @return bitSet, результат разности двух множеств
+ */
+bitSet bitset_intersection(const bitSet* A, const bitSet* B) {
+  bitSet result =
+      bitset_create(A->capacity > B->capacity ? A->capacity : B->capacity);
+
+  for (size_t i = 0; i < result.size; i++) {
+    uint64_t a_block = (i < A->size) ? A->bits[i] : 0;
+    uint64_t b_block = (i < B->size) ? B->bits[i] : 0;
+    result.bits[i] = a_block & ~b_block;
+  }
+
+  return result;
+}
+
+/**
+ * @brief Создает битовое множество, значение которого будет А △ В
+ *
+ * @author Mike Ostanin (github.com/stannisl)
+ *
+ * @param bitSet* A, указатель на битовове множество
+ * @param bitSet* B, указатель на битовове множество
+ *
+ * @return bitSet, результат симметрической разности двух множеств
+ */
+bitSet bitset_symmetric_diff(const bitSet* A, const bitSet* B) {
+  bitSet result =
+      bitset_create(A->capacity > B->capacity ? A->capacity : B->capacity);
+
+  for (size_t i = 0; i < result.size; i++) {
+    uint64_t a_block = (i < A->size) ? A->bits[i] : 0;
+    uint64_t b_block = (i < B->size) ? B->bits[i] : 0;
+    result.bits[i] = a_block ^ b_block;
+  }
+
+  return result;
 }
