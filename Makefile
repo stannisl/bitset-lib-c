@@ -68,7 +68,9 @@ $(BUILD_DIR):
 
 # Clang-formatter targets
 clang-check:
-	@clang-format --style=google -n $(SRC_DIR)/*.c $(SRC_DIR)/*/*.c $(EXAMPLE_DIR)/*.c $(SRC_DIR)/*.h $(TESTS_DIR)/*.c
+	@clang-format --style=google -n $$(find . -name "*.c")
+	@clang-format --style=google -n $$(find . -name "*.h")
 
 clang-format:
-	@clang-format --style=google -i $(SRC_DIR)/*.c $(SRC_DIR)/*/*.c $(EXAMPLE_DIR)/*.c $(SRC_DIR)/*.h $(TESTS_DIR)/*.c
+	@clang-format --style=google -i $$(find . -name "*.c")
+	@clang-format --style=google -i $$(find . -name "*.h")

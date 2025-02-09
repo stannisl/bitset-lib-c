@@ -76,6 +76,8 @@ void bitset_add_many(bitSet* set, int n, ...) {
 
   for (int i = 0; i < n; ++i) {
     int element = va_arg(args, int);
+    assert("Element should meet boundaries of set" && element >= 0 &&
+           (size_t)element < set->capacity);
     bitset_add(set, element);
   }
 
