@@ -13,7 +13,7 @@ int main() {
   bitSet set1 = bitset_create(64);
 
   bitset_add_many(&set, 3, 1, 4, 5);
-  bitset_add_many(&set1, 2, 2, 4);
+  bitset_add_many(&set1, 3, 2, 4, 6);
 
   bitSet un_set = bitset_union(&set1, &set);
   bitSet in_set = bitset_intersection(&set1, &set);

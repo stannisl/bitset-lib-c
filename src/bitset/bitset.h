@@ -178,7 +178,16 @@ bitSet bitset_sub(const bitSet*, const bitSet*);
  */
 bitSet bitset_symmetric_diff(const bitSet*, const bitSet*);
 
-//  7) дополнение А.
+/**
+ * @brief Считает битовое множество, которое дополнения множества A (разница
+ * универсального и A)
+ *
+ * @author Mike Ostanin (github.com/stannisl)
+ *
+ * @param bitSet* A, указатель на битовове множество
+ *
+ * @return bitSet, результат расчета дополнения
+ */
 bitSet bitset_complement(const bitSet* set);
 
 #endif
