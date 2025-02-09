@@ -10,7 +10,7 @@ Target to build static lib
 make all
 ```
 
-Compiled lib in /build/bitset.a
+Compiled lib in `/build/bitset.a`
 
 You can use it with linking using such template
 
