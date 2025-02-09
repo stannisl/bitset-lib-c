@@ -45,6 +45,18 @@ bitSet bitset_create(size_t capacity);
 void bitset_destroy(bitSet* set);
 
 /**
+ * @brief Удаляет n бит в битовом множество
+ *
+ * @author Mike Ostanin (github.com/stannisl)
+ *
+ * @param bitSet* set, указатель на битовое множество
+ * @param int element, n-ый бит для удаления.
+ *
+ * @return Nothing
+ */
+void bitset_remove(bitSet* set, int element);
+
+/**
  * @brief Добавляет бит в битовое множество, если размер меньше чем бит, ничего
  * не произойдет и бит не будет добавлен.
  *

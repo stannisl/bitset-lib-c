@@ -10,6 +10,29 @@ void test_create_destroy() {
   bitset_destroy(&set);
 }
 
+void test_remove() {
+  bitSet set = bitset_create(64);
+
+  bitset_add(&set, 1);
+  bitset_add(&set, 2);
+  bitset_add(&set, 3);
+
+  assert(bitset_contains(&set, 1));
+  assert(bitset_contains(&set, 2));
+  assert(bitset_contains(&set, 3));
+
+  bitset_remove(&set, 2);
+
+  assert(bitset_contains(&set, 1));
+  assert(!bitset_contains(&set, 2));
+  assert(bitset_contains(&set, 3));
+
+  bitset_remove(&set, 5);
+  assert(!bitset_contains(&set, 5));
+
+  bitset_destroy(&set);
+}
+
 void test_add_contains() {
   bitSet set = bitset_create(64);
   bitset_add(&set, 0);
@@ -168,6 +191,7 @@ int main() {
   test_is_equal();
   test_add_many();
   test_edge_cases();
+  test_remove();
 
   printf("All tests passed!\n");
   return 0;

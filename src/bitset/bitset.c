@@ -58,6 +58,26 @@ void bitset_add(bitSet* set, int element) {
 }
 
 /**
+ * @brief Удаляет n бит в битовом множество
+ *
+ * @author Mike Ostanin (github.com/stannisl)
+ *
+ * @param bitSet* set, указатель на битовое множество
+ * @param int element, n-ый бит для удаления.
+ *
+ * @return Nothing
+ */
+void bitset_remove(bitSet* set, int element) {
+  assert("Invalid element" &&
+         !(element < 0 || (size_t)element >= set->capacity));
+
+  size_t block = element / BIT_PER_BLOCK;
+  size_t bit = element % BIT_PER_BLOCK;
+
+  set->bits[block] &= ~(1ULL << bit);
+}
+
+/**
  * @brief Добавляет n бит в битовое множество
  *
  * @author Mike Ostanin (github.com/stannisl)
