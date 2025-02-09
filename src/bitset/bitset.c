@@ -302,6 +302,27 @@ bitSet bitset_symmetric_diff(const bitSet* A, const bitSet* B) {
     uint64_t b_block = (i < B->size) ? B->bits[i] : 0;
     result.bits[i] = a_block ^ b_block;
   }
+  return result;
+}
 
+/**
+ * @brief Считает битовое множество, которое дополнения множества A (разница
+ * универсального и A)
+ *
+ * @author Mike Ostanin (github.com/stannisl)
+ *
+ * @param bitSet* A, указатель на битовове множество
+ *
+ * @return bitSet, результат расчета дополнения
+ */
+bitSet bitset_complement(const bitSet* set) {
+  bitSet result = bitset_create(set->capacity);
+  for (size_t i = 0; i < result.size; ++i) {
+    result.bits[i] = ~set->bits[i];
+  }
+  size_t excess_bits = result.size * 64 - result.capacity;
+  if (excess_bits > 0) {
+    result.bits[result.size - 1] &= (1ULL << (64 - excess_bits)) - 1;
+  }
   return result;
 }

@@ -7,7 +7,6 @@ output:
   set != set1
   set is a subset of set1
   set is a strict subset of set1
-
 */
 
 int main() {
