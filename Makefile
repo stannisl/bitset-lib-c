@@ -25,7 +25,7 @@ TEST_EXEC = $(EXEC_DIR)/test
 TARGET = $(BUILD_DIR)/bitset.a
 
 # Main targets
-all: clean $(TARGET)
+all: clean $(TARGET) main
 
 rebuild: clean all
 
@@ -33,7 +33,11 @@ $(TARGET): $(BUILD_DIR) $(OBJECTS)
 	ar -rcs $@ $(OBJECTS)
 
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD_DIR) main
+
+main: clean $(TARGET)
+	$(CC) $(CFLAGS) $(SRC_DIR)/main.c $(TARGET) -o main
+	./main
 
 test: build_test_asan
 	./$(TEST_EXEC)

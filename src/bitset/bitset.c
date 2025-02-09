@@ -51,7 +51,7 @@ void bitset_destroy(bitSet* set) {
 void bitset_add(bitSet* set, int element) {
   assert("Adding a bit that bigger than capacity" &&
          set->capacity > (size_t)element);
-  assert("Adding a negative place bit in the set" && element > 0);
+  assert("Adding a negative place bit in the set" && element >= 0);
 
   int block = element / BIT_PER_BLOCK;
   set->bits[block] |= (1ULL << (element % BIT_PER_BLOCK));

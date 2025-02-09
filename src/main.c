@@ -68,7 +68,9 @@ int main() {
   printf("(A ∩ B') ∪ (C − D): ");
   bitset_print(&union_temp, output_to_stdout);
 
-  printf("\nFinal result\n (A ∩ B △ C ∪ D) − ((A ∩ B') ∪ (C − D)): ");
+  printf(
+      "\nFinal result for 17th task\n (A ∩ B △ C ∪ D) − ((A ∩ B') ∪ (C − "
+      "D)): ");
   bitset_print(&result, output_to_stdout);
 
   bitset_destroy(&a);
